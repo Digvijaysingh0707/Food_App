@@ -1,9 +1,3 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import logo from './assets/images/logo.png';
-
-
-//Config Driven UI - Mock Data from API
 const restaurantList = [
   {
     type: "restaurant",
@@ -736,78 +730,4 @@ const restaurantList = [
   },
 ];
 
-const imgCdn = "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
-
-const Title = () => {
-  return(
-  <a href="/"> <img className="logo" alt="logo" src= {logo} /> </a>
-  )
-};
-
-const NavComponent = () => {
-  return (
-    <div className="nav-items">
-    <ul>
-      <li>Home</li>
-      <li>About</li>
-      <li>Contact</li>
-      <li>Cart</li>
-    </ul>
-  </div>
-  );
-}
-const Header = () => {
-  return (
-    <div className="header">
-      <Title />
-      <NavComponent />
-    </div>
-  );
-};
-
-const RestaurantCard = ({name, cuisines, cloudinaryImageId, avgRating, lastMileTravelString}) => {
-  return (
-    <div className="card">
-      <img src={ imgCdn +
-          cloudinaryImageId }/>
-      <span className="card-title">{name}</span>
-      <span className="card-tags">{cuisines.join(", ")}</span>
-      <span className="card-rating">{avgRating}</span>
-      <h4>{lastMileTravelString} minutes</h4>
-    </div>
-  );
-};
-
-const RestaurantList = () => {
-  return (
-    <div className="restaurant-list">
-      {restaurantList.map((restaurant) => {
-        return <RestaurantCard {...restaurant.data} key={restaurant.data.id} />;
-      })}
-    </div>
-  );
-}
-
-const Body = () => {
-  return (
-    <RestaurantList />
-  );
-};
-
-const Footer = () => {
-  return <h4>Footer</h4>;
-};
-
-const AppLayout = () => {
-  return (
-    <>
-      <Header />
-      <Body />
-      <Footer />
-    </>
-  );
-};
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-
-root.render(<AppLayout />);
+export default restaurantList 
