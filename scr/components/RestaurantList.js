@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import { swiggy_api_URL } from "../utils/constants";
+import Shimmer from "./Shimmer";
 
 
 
@@ -49,25 +50,25 @@ const RestaurantList = () => {
     getRestaurants()
   }, [])
 
-  // console.log(list, 'LIST')
+  return allRestaurants?.length === 0 ? <Shimmer />
+    :
+    (
+      <>
+        <div className="filter">
+          <button className="filter-btn" onClick={() => {
+            const filteredList = list?.filter(item => item?.data?.avgRating > 4)
+            setList(filteredList)
 
-  return (
-    <>
-      <div className="filter">
-        <button className="filter-btn" onClick={() => {
-          const filteredList = list?.filter(item => item?.data?.avgRating > 4)
-          setList(filteredList)
-
-        }}>
-          Top Rated Restaurant
-        </button>
-      </div>
-      <div className="restaurant-list">
-        {allRestaurants?.map((restaurant) => {
-         return <RestaurantCard key={restaurant?.info?.id} {...restaurant?.info} />
-        })}
-      </div>
-    </>
-  );
+          }}>
+            Top Rated Restaurant
+          </button>
+        </div>
+        <div className="restaurant-list">
+          {allRestaurants?.map((restaurant) => {
+            return <RestaurantCard key={restaurant?.info?.id} {...restaurant?.info} />
+          })}
+        </div>
+      </>
+    );
 }
 export default RestaurantList
