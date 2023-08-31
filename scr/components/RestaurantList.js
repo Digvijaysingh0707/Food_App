@@ -1,19 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
-import restaurantList from "../utils/mockData";
+import { swiggy_api_URL } from "../utils/constants";
+
 
 
 
 const RestaurantList = () => {
 
-  let [list, setList] = useState(restaurantList)
+  const [allRestaurants, setAllRestaurants] = useState([]);
 
   const filterData = () => {
     list = list?.filter(item => item?.data?.avgRating > 4.0)
     // setList(newData)
   }
 
-  console.log(list, 'LOST')
+  async function getRestaurants() {
+    // handle the error using try... catch
+    try {
+      const response = await fetch(swiggy_api_URL);
+      const json = await response.json();
+
+      // initialize checkJsonData() function to check Swiggy Restaurant data
+      async function checkJsonData(jsonData) {
+        for (let i = 0; i < jsonData?.data?.cards.length; i++) {
+
+          // initialize checkData for Swiggy Restaurant data
+          let checkData = json?.data?.cards[i]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+
+          // if checkData is not undefined then return it
+          if (checkData !== undefined) {
+            return checkData;
+          }
+        }
+      }
+
+      // call the checkJsonData() function which return Swiggy Restaurant data
+      const resData = await checkJsonData(json);
+
+      // update the state variable restaurants with Swiggy API data
+      setAllRestaurants(resData);
+      // setFilteredRestaurants(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getRestaurants()
+  }, [])
+
+  // console.log(list, 'LIST')
+
   return (
     <>
       <div className="filter">
@@ -26,8 +63,8 @@ const RestaurantList = () => {
         </button>
       </div>
       <div className="restaurant-list">
-        {list?.map((restaurant) => {
-          return <RestaurantCard {...restaurant.data} key={restaurant.data.id} />;
+        {allRestaurants?.map((restaurant) => {
+         return <RestaurantCard key={restaurant?.info?.id} {...restaurant?.info} />
         })}
       </div>
     </>
