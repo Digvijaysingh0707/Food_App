@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from '../../assets/images/logo.png';
 
 
@@ -18,6 +18,8 @@ const Title = () => {
 };
 
 const NavComponent = () => {
+
+  const [btnName, setBtnName] = useState("Login")
   return (
     <div className="nav-items">
       <ul>
@@ -25,7 +27,16 @@ const NavComponent = () => {
         <li>About</li>
         <li>Contact</li>
         <li>Cart</li>
+
+        <button className="login"
+          onClick={() => {
+            btnName === "Login" ? setBtnName("Logout") : setBtnName("Login")
+          }}
+        >
+          {btnName}
+        </button>
       </ul>
+
     </div>
   );
 }

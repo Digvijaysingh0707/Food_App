@@ -9,6 +9,8 @@ import Shimmer from "./Shimmer";
 const RestaurantList = () => {
 
   const [allRestaurants, setAllRestaurants] = useState([]);
+  const [searchText, setSearchText] = useState("")
+  const [copyRestaurant, setCopyRestaurant] = useState([])
 
   const filterData = () => {
     list = list?.filter(item => item?.data?.avgRating > 4.0)
@@ -40,6 +42,7 @@ const RestaurantList = () => {
 
       // update the state variable restaurants with Swiggy API data
       setAllRestaurants(resData);
+      setCopyRestaurant(resData)
       // setFilteredRestaurants(resData);
     } catch (error) {
       console.log(error);
@@ -55,6 +58,17 @@ const RestaurantList = () => {
     (
       <>
         <div className="filter">
+          <div className="search">
+            <input type="text" className="search-box" value={searchText} onChange={(e) => {
+              setSearchText(e.target.value)
+            }} />
+            <button onClick={() => {
+              const filterRestaurant = copyRestaurant?.filter((res) =>
+                res?.info?.name.toLowerCase().includes(searchText.toLowerCase())
+              )
+              setAllRestaurants(filterRestaurant)
+            }}>Search</button>
+          </div>
           <button className="filter-btn" onClick={() => {
             const filteredList = list?.filter(item => item?.data?.avgRating > 4)
             setList(filteredList)
