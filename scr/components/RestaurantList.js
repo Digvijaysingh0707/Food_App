@@ -3,6 +3,7 @@ import RestaurantCard from "./RestaurantCard";
 import { swiggy_api_URL } from "../utils/constants";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 
 
@@ -12,6 +13,7 @@ const RestaurantList = () => {
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("")
   const [copyRestaurant, setCopyRestaurant] = useState([])
+  const onlineStatus = useOnlineStatus()
 
   const filterData = () => {
     list = list?.filter(item => item?.data?.avgRating > 4.0)
@@ -53,6 +55,10 @@ const RestaurantList = () => {
   useEffect(() => {
     getRestaurants()
   }, [])
+ 
+  if (onlineStatus === false) {
+    return <h1>Looks Like you're offline!! Please Check your internet connection</h1>
+  }
 
   return allRestaurants?.length === 0 ? <Shimmer />
     :
